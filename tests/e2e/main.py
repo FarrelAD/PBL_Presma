@@ -1,18 +1,66 @@
-import re
-from playwright.sync_api import Page, expect
+import random
+from playwright.sync_api import Playwright, sync_playwright, expect
+from faker import Faker
 
-def test_has_title(page: Page) -> None:
-    page.goto("https://playwright.dev/")
+def run(playwright: Playwright) -> None:
+    fake = Faker("id_ID")
 
-    # Expect a title "to contain" a substring.
-    expect(page).to_have_title(re.compile("Playwright"))
+    username = fake.user_name()
+    nama = fake.name()
+    email = fake.email()
+    nim = str(random.randint(100000000000, 999999999999))
 
-def test_get_started_link(page: Page) -> None:
-    page.goto("https://playwright.dev/")
+    print(f"🔹 Data Mahasiswa yang akan ditambahkan:")
+    print(f"   Username : {username}")
+    print(f"   Nama     : {nama}")
+    print(f"   Email    : {email}")
+    print(f"   NIM      : {nim}")
 
-    # Click the get started link.
-    page.get_by_role("link", name="Get started").click()
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
 
-    # Expects page to have a heading with the name of Installation.
-    expect(page.get_by_role("heading", name="Installation")).to_be_visible()
+    page.goto("https://presma.dbsnetwork.my.id/")
+    page.get_by_role("link", name="Masuk").click()
+    page.get_by_role("textbox", name="Username").fill("admin")
+    page.get_by_role("textbox", name="Password").fill("admin123")
+    page.get_by_role("textbox", name="Password").press("Enter")
 
+    page.goto("https://presma.dbsnetwork.my.id/mahasiswa")
+    page.get_by_text("Mahasiswa Dosen").click()
+
+    page.get_by_role("button", name=" Tambah").click()
+    page.locator("#username").fill(username)
+    page.locator("#nim").fill(nim)
+    page.locator("#nama").fill(nama)
+    page.locator("#select2-mahasiswa_prodi-container").click()
+    page.get_by_role("treeitem", name="D4 - Teknik Informatika").click()
+    page.locator("#select2-mahasiswa_kelas-container").click()
+    page.get_by_role("treeitem", name="TI - 1A").click()
+    page.locator("#email").fill(email)
+    page.locator("#no_tlp").fill(fake.phone_number()[:12])
+    page.locator("#alamat").fill(fake.address())
+    page.locator("#ipk").fill(str(round(random.uniform(2.0, 4.0), 2)))
+    page.locator("#tahun_angkatan").fill("2023")
+    page.locator("#password").fill("mahasiswa123")
+    page.get_by_role("button", name="Simpan").click()
+
+    notif = page.locator(".swal2-popup")
+    try:
+        expect(notif).to_contain_text("berhasil", timeout=5000)
+        print("✅ Functional Test 5: Data Mahasiswa berhasil ditambahkan")
+    except Exception as e:
+        print("❌ Functional Test 5: Gagal menambahkan data Mahasiswa")
+        print(f"   Detail error: {str(e)}")
+
+    try:
+        page.get_by_role("button", name="OK").click(timeout=3000)
+    except:
+        pass
+
+    context.close()
+    browser.close()
+
+
+with sync_playwright() as playwright:
+    run(playwright)
