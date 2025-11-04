@@ -25,7 +25,7 @@ Ini merupakan eksperimen end-to-end (E2E) testing yang dilakukan menggunakan Pyt
 
     Playwright memerlukan browser yang diinstal terlebih dahulu agar dapat menjalankan pengujian secara otomatis. Jalankan perintah berikut:
 
-    ```python
+    ```bash
     playwright install
     ```
 
@@ -33,7 +33,28 @@ Ini merupakan eksperimen end-to-end (E2E) testing yang dilakukan menggunakan Pyt
 
     Gunakan perintah berikut untuk menjalankan pengujian:
 
-    ```python
+    ```bash
     pytest main.py
     ```
 
+# Tips & Trick
+
+1. Lakukan proses test secara otomatis dengan hanya merekam dari hasil aktivitas kita di web melalui bantuan tool **codegen**
+
+    Untuk menjalankannya, maka bisa menggunakan perintah berikut: 
+
+    ```bash
+    playwright codegen <nama-domain-website-tanpa-http>
+    ```
+    
+    Contoh:
+
+    ```bash
+    playwright codegen presma.dbsnetwork.my.id
+    ```
+
+2. Jika proses testing ingin menampilkan browser yang digunakan, maka bisa menambahkan flag `--headed` pada command `pytest`
+
+    ```bash
+    pytest main.py --headed
+    ```
