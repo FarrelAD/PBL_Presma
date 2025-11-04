@@ -53,7 +53,12 @@ Ini merupakan eksperimen end-to-end (E2E) testing yang dilakukan menggunakan Pyt
     playwright codegen presma.dbsnetwork.my.id
     ```
 
-2. Jika proses testing ingin menampilkan browser yang digunakan, maka bisa menambahkan flag `--headed` pada command `pytest`
+    Contoh video demonstrasi:
+
+    https://github.com/user-attachments/assets/25942e2e-af08-4d6e-9dd8-02b654bfe578
+
+
+3. Jika proses testing ingin menampilkan browser yang digunakan, maka bisa menambahkan flag `--headed` pada command `pytest`
 
     ```bash
     pytest main.py --headed
