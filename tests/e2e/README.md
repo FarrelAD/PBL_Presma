@@ -13,7 +13,7 @@ Ini merupakan eksperimen end-to-end (E2E) testing yang dilakukan menggunakan Pyt
     uv sync
     ```
 
-    Jika anda tidak memiliki `uv`, maka anda bisa menginstal dependensi secara manual dengan cara berikut:
+    Jika anda tidak memiliki [`uv`](https://docs.astral.sh/uv/), maka anda bisa menginstal dependensi secara manual dengan cara berikut:
 
     ```bash
     python -m venv .venv
